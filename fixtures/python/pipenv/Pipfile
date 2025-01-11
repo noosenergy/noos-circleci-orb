@@ -8,6 +8,7 @@ python_version = "3"
 
 [packages]
 colorama = "*"
+setuptools = "*"
 
 [dev-packages]
 # Symlink to project root
