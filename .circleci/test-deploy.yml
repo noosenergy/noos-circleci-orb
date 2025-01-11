@@ -27,7 +27,7 @@ filters_non_master_only: &filter_non_master_only
 # ----------------
 
 orbs:
-  orb-tools: circleci/orb-tools@12.1.0
+  orb-tools: circleci/orb-tools@12.3.0
   noos-ci: noosenergy/noos-ci@dev:<<pipeline.git.revision>>
 
 # --------------
@@ -38,7 +38,7 @@ jobs:
   integration_test_python_lint_package_pipenv:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - run:
@@ -53,7 +53,7 @@ jobs:
   integration_test_python_test_package_pipenv:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - run:
@@ -68,7 +68,7 @@ jobs:
   integration_test_python_build_wheel_pipenv:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - run:
@@ -82,7 +82,7 @@ jobs:
   integration_test_python_lint_package_uv:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - run:
@@ -97,7 +97,7 @@ jobs:
   integration_test_python_test_package_uv:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - run:
@@ -112,7 +112,7 @@ jobs:
   integration_test_python_build_wheel_uv:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - run:
@@ -126,7 +126,7 @@ jobs:
   integration_test_helm_lint_chart:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - noos-ci/helm_lint_chart:
@@ -135,7 +135,7 @@ jobs:
   integration_test_helm_build_chart:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - noos-ci/helm_build_chart:
@@ -147,7 +147,7 @@ jobs:
   integration_test_docker_build_image:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - noos-ci/docker_build_image:
@@ -164,7 +164,7 @@ jobs:
   integration_test_docker_buildx_image:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - noos-ci/docker_buildx_image:
@@ -177,7 +177,7 @@ jobs:
   integration_test_terraform_run_plan:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - noos-ci/terraform_update_variable:
@@ -191,7 +191,7 @@ jobs:
   integration_test_github_post_comment:
     executor:
       name: noos-ci/default
-      tag: latest
+      tag: 3.12.8
     steps:
       - checkout
       - noos-ci/github_post_comment
