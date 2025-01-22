@@ -1,0 +1,28 @@
+---
+
+description: Post a comment in a github PR.
+
+usage:
+
+  version: 2.1
+
+  orbs:
+    noos-ci: noosenergy/noos-ci@0.4.0
+
+  jobs:
+    github_post_comment:
+      executor:
+        name: noos-ci/default
+        tag: latest
+      steps:
+        - checkout
+        - noos-ci/github_post_comment:
+            comment: This is an example comment
+
+  workflows:
+    build:
+      jobs:
+        - github_post_comment:
+            filters:
+              branches:
+                ignore: master
