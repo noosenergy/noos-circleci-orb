@@ -27,7 +27,7 @@ filters_non_master_only: &filter_non_master_only
 # ----------------
 
 orbs:
-  orb-tools: circleci/orb-tools@12.1.0
+  orb-tools: circleci/orb-tools@12.3.0
   noos-ci: noosenergy/noos-ci@dev:<<pipeline.git.revision>>
 
 # --------------
