@@ -17,6 +17,7 @@ noos-test = {editable = true, path = "."}
 black = "*"
 isort = "*"
 # Linter
+ruff = "*"
 flake8 = "*"
 mypy = "*"
 pydocstyle = "*"
