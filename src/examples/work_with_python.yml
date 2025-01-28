@@ -21,6 +21,7 @@ usage:
             install_args: "--dev"
             configure_git: false
             src_directory: "./src"
+            linters: "ruff,mypy"
     test_package:
       executor:
         name: noos-ci/default

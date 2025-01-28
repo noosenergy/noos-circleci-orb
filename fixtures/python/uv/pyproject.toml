@@ -32,6 +32,30 @@ default_section = "THIRDPARTY"
 known_first_party = "noos_test"
 sections = "STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 
+[tool.ruff]
+line-length = 99
+src = ["src"]
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = [
+    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", # Pydocstyle
+    "F405", "W391", "E203", "E701" # Flake8
+]
+select = ["E"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+default-section = "third-party"
+known-first-party = ["noos_test"]
+section-order = ["standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
 [tool.mypy]
 install_types = true
 non_interactive = true
@@ -63,4 +87,5 @@ dev-dependencies = [
     "pydocstyle>=6.3.0",
     "pytest>=8.3.2",
     "build>=1.2.1",
+    "ruff>=0.9.3",
 ]

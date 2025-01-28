@@ -49,6 +49,7 @@ jobs:
           install_args: "--dev"
           configure_git: false
           src_directory: "./src"
+          linters: "black,isort,flake8,pydocstyle,ruff,mypy"
 
   integration_test_python_test_package_pipenv:
     executor:
@@ -93,6 +94,7 @@ jobs:
           install_args: "--dev"
           configure_git: false
           src_directory: "./src"
+          linters: "black,isort,flake8,pydocstyle,ruff,mypy"
 
   integration_test_python_test_package_uv:
     executor:

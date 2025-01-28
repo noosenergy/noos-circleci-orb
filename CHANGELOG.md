@@ -153,3 +153,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Bump Slack CircleCI Orb to v5.1.1.
  - Bump Helm CircleCI Orb to v3.1.0.
  - Bump orb-tools to v12.3.0.
+
+## [0.4.2] - 2025-01-27
+### Added
+ - Add linters param in python_lint_package command.

@@ -1,6 +1,6 @@
 ---
 
-description: Run Python linters [black, isort, pydoc, flake8, pypy].
+description: Run Python linters [black, isort, pydoc, flake8, mypy, ruff].
 
 parameters:
   pkg_manager:
@@ -20,6 +20,10 @@ parameters:
     type: string
     default: "./src"
     description: Package source directory.
+  linters:
+    type: string
+    default: "ruff,mypy"
+    description: A comma-delimited list of linters to use.
 
 steps:
   - python_configure_venv:
@@ -31,3 +35,4 @@ steps:
       command: noosinv python.lint
         --source << parameters.src_directory >>
         --install << parameters.pkg_manager >>
+        --linters << parameters.linters >>
