@@ -12,6 +12,10 @@ parameters:
     type: string
     default: "--dev"
     description: Arguments to pass to the install command.
+  pytest_args:
+    type: string
+    default: ""
+    description: Arguments to pass to the pytest command.
   configure_git:
     type: boolean
     default: false
@@ -37,3 +41,4 @@ steps:
         --tests << parameters.tests_directory >>
         --group '<< parameters.tests_group >>'
         --install << parameters.pkg_manager >>
+        --pytest-args '<< parameters.pytest_args >>'
