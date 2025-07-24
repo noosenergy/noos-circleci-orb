@@ -12,7 +12,7 @@ parameters:
     default: latest
   db_tag:
     type: string
-    default: "latest-pg16"
+    default: "latest-pg17"
   db_user:
     type: string
     default: postgres
