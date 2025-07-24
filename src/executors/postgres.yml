@@ -12,7 +12,7 @@ parameters:
     default: latest
   db_tag:
     type: string
-    default: "12.17"
+    default: "17.5"
   db_user:
     type: string
     default: postgres

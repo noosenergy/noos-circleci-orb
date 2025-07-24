@@ -161,3 +161,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.3] - 2025-05-30
 ### Added
  - Add pytest param in python_test_package command.
+
+## [0.4.4] - 2025-07-24
+### Changed
+ - Bump Postgresql and Timescale side-car container to 17.5
