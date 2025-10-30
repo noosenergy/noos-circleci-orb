@@ -35,51 +35,6 @@ orbs:
 # --------------
 
 jobs:
-  integration_test_python_lint_package_pipenv:
-    executor:
-      name: noos-ci/default
-      tag: latest
-    steps:
-      - checkout
-      - run:
-          name: Copy fixtures files over
-          command: cp -R ./fixtures/python/pipenv/* .
-      - noos-ci/python_lint_package:
-          pkg_manager: pipenv
-          install_args: "--dev"
-          configure_git: false
-          src_directory: "./src"
-          linters: "black,isort,flake8,pydocstyle,ruff,mypy"
-
-  integration_test_python_test_package_pipenv:
-    executor:
-      name: noos-ci/default
-      tag: latest
-    steps:
-      - checkout
-      - run:
-          name: Copy fixtures files over
-          command: cp -R ./fixtures/python/pipenv/* .
-      - noos-ci/python_test_package:
-          pkg_manager: pipenv
-          install_args: "--dev"
-          configure_git: false
-          tests_directory: "./src/tests"
-
-  integration_test_python_build_wheel_pipenv:
-    executor:
-      name: noos-ci/default
-      tag: latest
-    steps:
-      - checkout
-      - run:
-          name: Copy fixtures files over
-          command: cp -R ./fixtures/python/pipenv/* .
-      - noos-ci/python_build_wheel:
-          pkg_manager: pipenv
-          install_args: "--dev"
-          configure_git: false
-
   integration_test_python_lint_package_uv:
     executor:
       name: noos-ci/default
@@ -205,9 +160,6 @@ jobs:
 workflows:
   test:
     jobs:
-      - integration_test_python_lint_package_pipenv
-      - integration_test_python_test_package_pipenv
-      - integration_test_python_build_wheel_pipenv
       - integration_test_python_lint_package_uv
       - integration_test_python_test_package_uv
       - integration_test_python_build_wheel_uv
