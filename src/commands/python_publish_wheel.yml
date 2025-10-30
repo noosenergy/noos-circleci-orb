@@ -1,12 +1,12 @@
 ---
 
-description: Publish wheel distribution to PyPi [poetry ONLY].
+description: Publish wheel distribution to PyPi [uv and poetry ONLY].
 
 parameters:
   pkg_manager:
     type: enum
     enum: ["pipenv", "poetry", "uv"]
-    default: "pipenv"
+    default: "uv"
     description: Which package management tool to use.
   install_args:
     type: string
