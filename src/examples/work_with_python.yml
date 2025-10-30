@@ -17,7 +17,7 @@ usage:
       steps:
         - checkout
         - noos-ci/python_lint_package:
-            pkg_manager: pipenv
+            pkg_manager: uv
             install_args: "--dev"
             configure_git: false
             src_directory: "./src"
@@ -29,7 +29,7 @@ usage:
       steps:
         - checkout
         - noos-ci/python_test_package:
-            pkg_manager: pipenv
+            pkg_manager: uv
             install_args: "--dev"
             configure_git: false
             tests_directory: "./tests"
@@ -40,7 +40,7 @@ usage:
       steps:
         - checkout
         - noos-ci/python_build_wheel:
-            pkg_manager: pipenv
+            pkg_manager: uv
             install_args: "--dev"
             configure_git: false
 
