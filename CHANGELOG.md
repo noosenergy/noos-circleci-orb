@@ -165,3 +165,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.4] - 2025-07-24
 ### Changed
  - Bump Postgresql and Timescale side-car container to 17.5
+
+## [0.4.5] - 2025-10-30
+### Changed
+ - Set uv as the default python package manager.
+ - Bump orb-tools to v12.3.1.
+ - Bump AWS CircleCI Orb to v5.4.1.
+ - Bump Helm CircleCI Orb to v3.2.0.
+ - Bump Slack CircleCI Orb to v6.0.0.
