@@ -1,24 +1,16 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9.5,<0.10.0"]
+build-backend = "uv_build"
 
 [project]
 name = "noos-test"
 version = "1.0.0"
 license = {text = "Proprietary"}
-dynamic = ["readme"]
+readme = "README.md"
+requires-python = ">=3.12"
 dependencies = [
     "colorama>=0.4.6",
 ]
-requires-python = ">=3.12"
-
-[tool.setuptools.dynamic]
-readme = {file = ["README.md"]}
-
-[tool.setuptools.packages.find]
-namespaces = false
-where = ["src"]
-include = ["*noos_test*"]
 
 [tool.black]
 line-length = 99
