@@ -177,3 +177,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  ## [0.4.6] - 2026-01-07
 ### Changed
  - Check lockfile matches the project metadata before setup python venv
+ - Bump Slack CireclCI Orb to v6.1.2
+ - Bump Helm binary to v3.18.6
