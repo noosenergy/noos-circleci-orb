@@ -173,3 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Bump AWS CircleCI Orb to v5.4.1.
  - Bump Helm CircleCI Orb to v3.2.0.
  - Bump Slack CircleCI Orb to v6.0.0.
+
+ ## [0.4.6] - 2026-01-07
+### Changed
+ - Check lockfile matches the project metadata before setup python venv
