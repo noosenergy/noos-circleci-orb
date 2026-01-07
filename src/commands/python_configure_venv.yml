@@ -1,5 +1,4 @@
 ---
-
 description: Spinup Python virtual environment [pipenv, poetry or uv].
 
 parameters:
@@ -77,6 +76,7 @@ steps:
         - run:
             name: Install Python packages
             command: |
+              uv lock --check
               uv sync --frozen << parameters.install_args >>
         - save_cache:
             key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\

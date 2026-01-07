@@ -1,5 +1,4 @@
 ---
-
 version: 2.1
 
 description: Noos Energy CircleCI Orb for CI/CD pipelines
@@ -11,4 +10,4 @@ display:
 orbs:
   aws-cli: circleci/aws-cli@5.4.1
   helm-cli: circleci/helm@3.2.0
-  slack-msg: circleci/slack@6.0.0
+  slack-msg: circleci/slack@6.1.2
