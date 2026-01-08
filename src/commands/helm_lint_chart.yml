@@ -1,5 +1,4 @@
 ---
-
 description: Check compliance of Helm chart vs values.
 
 parameters:
@@ -8,8 +7,14 @@ parameters:
     default: "./helm/chart"
     description: Unpackaged Helm chart directory.
 
+  values_file:
+    type: string
+    default: "./local/helm-values.yaml"
+    description: Values file for the helm chart.
+
 steps:
-  - helm_install_cli
   - run:
       name: Lint Helm chart
-      command: noosinv helm.lint --chart << parameters.chart_directory >>
+      command: |
+        noosinv helm.lint --chart << parameters.chart_directory >> \
+                          --values << parameters.values_file >>
