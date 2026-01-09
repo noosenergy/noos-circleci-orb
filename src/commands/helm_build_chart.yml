@@ -1,5 +1,4 @@
 ---
-
 description: >
   Build and push Helm chart to remote registry
   [AWS ECR or Chart Museum].
@@ -28,7 +27,6 @@ parameters:
     description: Whether to send a Slack on failure.
 
 steps:
-  - helm_install_cli
   - helm_configure_repo:
       registry_provider: << parameters.registry_provider >>
   - when:

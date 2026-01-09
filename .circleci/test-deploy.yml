@@ -88,6 +88,7 @@ jobs:
       - checkout
       - noos-ci/helm_lint_chart:
           chart_directory: ./fixtures/helm
+          values_file: ./fixtures/helm/values.yaml
 
   integration_test_helm_build_chart:
     executor:
