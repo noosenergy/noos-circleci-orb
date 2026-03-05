@@ -1,0 +1,66 @@
+---
+description: Build, tag and push Docker image for cross platform
+  to remote registry [AWS ECR].
+
+parameters:
+  layer_caching:
+    type: boolean
+    default: false
+    description: Whether to cache Docker layers.
+  registry_provider:
+    type: enum
+    enum: ["aws", "docker"]
+    default: "aws"
+    description: Docker registry provider.
+  image_name:
+    type: string
+    description: Docker local image name.
+  image_platform_tags:
+    type: string
+    description: Comma separated list of single platform image tags.
+  image_tag:
+    type: string
+    description: Docker remote image tag.
+  image_tag_only:
+    type: boolean
+    default: false
+    description: Whether to tag the Docker image only.
+  slack_alert:
+    type: boolean
+    default: true
+    description: Whether to send a Slack on failure.
+
+steps:
+  - docker_install_cli:
+      layer_caching: << parameters.layer_caching >>
+  - docker_configure_repo:
+      registry_provider: << parameters.registry_provider >>
+  - run:
+      name: Create and provision Docker builder
+      command: noosinv docker.configure --no-install-qemu
+  - run:
+      name: Create multi-architecture image from mono-architecture tags
+      command: >-
+        if [ "<< parameters.registry_provider >>" = "aws" ]; then
+          export NOOSINV_DOCKER_REPO=$AWS_ECR_URL
+        elif [ "<< parameters.registry_provider >>" = "docker" ]; then
+          export NOOSINV_DOCKER_REPO=$DOCKERHUB_USER
+        fi
+
+        set -- "$@" --name << parameters.image_name >>
+
+        set -- "$@" --tag << parameters.image_tag >>
+
+        set -- "$@" --image-platform-tags << parameters.image_platform_tags >>
+
+        if << parameters.image_tag_only >>; then
+          set -- "$@" --tag-only
+        fi
+
+        noosinv docker.imagetools "$@"
+  - when:
+      condition: << parameters.slack_alert >>
+      steps:
+        - slack-msg/notify:
+            event: fail
+            template: basic_fail_1

@@ -132,6 +132,58 @@ jobs:
           image_tag: ${CIRCLE_SHA1}
           image_platform: "linux/arm64,linux/amd64"
 
+  # Part of the manual multiarch test
+  integration_test_docker_imagetools_amd:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - noos-ci/docker_build_image:
+          layer_caching: false
+          registry_provider: docker
+          configure_git: false
+          image_context: ./fixtures/docker
+          image_file: ./fixtures/docker/Dockerfile
+          image_name: busybox
+          image_tag: test_amd64
+          image_tag_only: true
+          no_output_timeout: 15m
+
+  # Part of the manual multiarch test
+  integration_test_docker_imagetools_arm:
+    resource_class: arm.medium
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - noos-ci/docker_build_image:
+          layer_caching: false
+          registry_provider: docker
+          configure_git: false
+          image_context: ./fixtures/docker
+          image_file: ./fixtures/docker/Dockerfile
+          image_name: busybox
+          image_tag: test_arm64
+          image_tag_only: true
+          no_output_timeout: 15m
+
+  # Part of the manual multiarch test
+  integration_test_docker_imagetools_multiarch:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - noos-ci/docker_imagetools_image:
+          layer_caching: false
+          registry_provider: docker
+          image_name: busybox
+          image_platform_tags: "test_amd64,test_arm64"
+          image_tag: test_multiarch
+          image_tag_only: true
+
   integration_test_terraform_run_plan:
     executor:
       name: noos-ci/default
@@ -176,6 +228,15 @@ workflows:
           context: DOCKERHUB_SHARED
       - integration_test_terraform_run_plan:
           context: NOOS_PROD_SHARED
+      - integration_test_docker_imagetools_amd:
+          context: DOCKERHUB_SHARED
+      - integration_test_docker_imagetools_arm:
+          context: DOCKERHUB_SHARED
+      - integration_test_docker_imagetools_multiarch:
+          context: DOCKERHUB_SHARED
+          requires:
+            - integration_test_docker_imagetools_amd
+            - integration_test_docker_imagetools_arm
 
   publish:
     jobs:
