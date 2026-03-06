@@ -183,3 +183,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.7] - 2026-01-08
 ### Changed
  - Removed helm_install_cli command and references as it is installed in docker image
+
+## [0.5.0] - 2026-03-06
+### Added
+ - Add Docker imagetools command for x-platform Docker image manifest.
