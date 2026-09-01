@@ -100,7 +100,6 @@ jobs:
           registry_provider: aws
           chart_directory: ./fixtures/helm
           chart_name: noos-prod/noos-test
-          chart_tag: 0.0.1
 
   integration_test_docker_build_image:
     executor:

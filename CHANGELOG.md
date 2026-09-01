@@ -187,3 +187,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.0] - 2026-03-06
 ### Added
  - Add Docker imagetools command for x-platform Docker image manifest.
+
+## [0.5.1] - 2026-03-06
+### Changed
+ - Removed `tag` argument from the helm push command as it is now extracted from the Chart directly.
+
+
