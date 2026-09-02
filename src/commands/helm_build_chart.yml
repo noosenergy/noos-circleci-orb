@@ -17,10 +17,6 @@ parameters:
     type: string
     default: "webserver"
     description: Packaged Helm chart name.
-  chart_tag:
-    type: string
-    default: "0.1.0"
-    description: Packaged Helm chart tag.
   slack_alert:
     type: boolean
     default: true
@@ -38,7 +34,6 @@ steps:
             command: noosinv helm.push
               --chart << parameters.chart_directory >>
               --name << parameters.chart_name >>
-              --tag << parameters.chart_tag >>
             environment:
               NOOSINV_HELM_REPO: $AWS_ECR_URL
   - when:
