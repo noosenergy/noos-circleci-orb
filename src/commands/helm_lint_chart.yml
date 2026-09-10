@@ -9,12 +9,17 @@ parameters:
 
   values_file:
     type: string
-    default: "./local/helm-values.yaml"
+    default: ""
     description: Values file for the helm chart.
 
 steps:
   - run:
       name: Lint Helm chart
-      command: |
-        noosinv helm.lint --chart << parameters.chart_directory >> \
-                          --values << parameters.values_file >>
+      command: >-
+        set -- "$@" --chart << parameters.chart_directory >>
+
+        if [ -n "<< parameters.values_file >>" ]; then
+          set -- "$@" --values << parameters.values_file >>
+        fi
+
+        noosinv helm.lint "$@"
