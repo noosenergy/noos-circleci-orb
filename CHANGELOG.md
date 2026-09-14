@@ -188,8 +188,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Add Docker imagetools command for x-platform Docker image manifest.
 
-## [0.5.1] - 2026-03-06
+## [0.5.1] - 2026-10-06
 ### Changed
  - Removed `tag` argument from the helm push command as it is now extracted from the Chart directly.
 
+## [0.5.2] - 2026-10-14
+### Changed
+ - Removed default `values_file` in `helm_lint_chart` so that the default behavior is to lint
+   against the chart's own default values.
 
