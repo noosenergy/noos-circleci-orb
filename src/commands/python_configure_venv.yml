@@ -10,6 +10,10 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  prune_cache:
+    type: boolean
+    default: false
+    description: Whether to prune the cache before saving it.
 
 steps:
   - when:
@@ -31,6 +35,12 @@ steps:
       command: |
         uv lock --check
         uv sync --frozen << parameters.install_args >>
+  - when:
+      condition: << parameters.prune_cache >>
+      steps:
+        - run:
+            name: Prune cache
+            command: uv cache prune --ci
   - save_cache:
       key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
         {{ checksum \"uv.lock\" }}"

@@ -11,6 +11,10 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  prune_cache:
+    type: boolean
+    default: false
+    description: Whether to prune the cache before saving it.
   slack_alert:
     type: boolean
     default: true
@@ -20,6 +24,7 @@ steps:
   - python_configure_venv:
       install_args: << parameters.install_args >>
       configure_git: << parameters.configure_git >>
+      prune_cache: << parameters.prune_cache >>
   - run:
       name: Publish Python wheel
       command: noosinv python.release --install uv

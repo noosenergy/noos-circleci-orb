@@ -11,11 +11,16 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  prune_cache:
+    type: boolean
+    default: false
+    description: Whether to prune the cache before saving it.
 
 steps:
   - python_configure_venv:
       install_args: << parameters.install_args >>
       configure_git: << parameters.configure_git >>
+      prune_cache: << parameters.prune_cache >>
   - run:
       name: Build Python wheel
       command: noosinv python.package --install uv

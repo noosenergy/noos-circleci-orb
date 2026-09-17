@@ -11,6 +11,10 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  prune_cache:
+    type: boolean
+    default: false
+    description: Whether to prune the cache before saving it.
   src_directory:
     type: string
     default: "./src"
@@ -24,6 +28,7 @@ steps:
   - python_configure_venv:
       install_args: << parameters.install_args >>
       configure_git: << parameters.configure_git >>
+      prune_cache: << parameters.prune_cache >>
   - run:
       name: Run Python linters
       command: noosinv python.lint

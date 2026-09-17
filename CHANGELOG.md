@@ -204,4 +204,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    `python_configure_venv`, `python_build_wheel`, `python_lint_package`,
    `python_publish_wheel` and `python_test_package`. This is a breaking change: consumers
    passing `pkg_manager` must remove it from their CircleCI config.
+### Added
+ - Added a `prune_cache` parameter (default `false`) to `python_configure_venv` and the
+   `python_*` commands that wrap it. When enabled, runs `uv cache prune --ci` before saving
+   the `.uv-cache` cache, reducing the size of the saved/restored cache archive.
 
