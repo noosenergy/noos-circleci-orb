@@ -45,7 +45,6 @@ jobs:
           name: Copy fixtures files over
           command: cp -R ./fixtures/python/uv/* .
       - noos-ci/python_lint_package:
-          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
           src_directory: "./src"
@@ -61,7 +60,6 @@ jobs:
           name: Copy fixtures files over
           command: cp -R ./fixtures/python/uv/* .
       - noos-ci/python_test_package:
-          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
           tests_directory: "./src/tests"
@@ -76,7 +74,6 @@ jobs:
           name: Copy fixtures files over
           command: cp -R ./fixtures/python/uv/* .
       - noos-ci/python_build_wheel:
-          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
 

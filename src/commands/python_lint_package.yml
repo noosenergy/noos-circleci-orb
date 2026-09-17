@@ -3,11 +3,6 @@
 description: Run Python linters [black, isort, pydoc, flake8, mypy, ruff].
 
 parameters:
-  pkg_manager:
-    type: enum
-    enum: ["pipenv", "poetry", "uv"]
-    default: "uv"
-    description: Which package management tool to use.
   install_args:
     type: string
     default: "--dev"
@@ -27,12 +22,11 @@ parameters:
 
 steps:
   - python_configure_venv:
-      pkg_manager: << parameters.pkg_manager >>
       install_args: << parameters.install_args >>
       configure_git: << parameters.configure_git >>
   - run:
       name: Run Python linters
       command: noosinv python.lint
         --source << parameters.src_directory >>
-        --install << parameters.pkg_manager >>
+        --install uv
         --linters << parameters.linters >>

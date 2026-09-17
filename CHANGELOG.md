@@ -197,3 +197,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Removed default `values_file` in `helm_lint_chart` so that the default behavior is to lint
    against the chart's own default values.
 
+## [Unreleased]
+### Removed
+ - Removed `pipenv` and `poetry` support from all `python_*` commands. `uv` is now the only
+   supported package manager, and the `pkg_manager` parameter has been dropped from
+   `python_configure_venv`, `python_build_wheel`, `python_lint_package`,
+   `python_publish_wheel` and `python_test_package`. This is a breaking change: consumers
+   passing `pkg_manager` must remove it from their CircleCI config.
+
