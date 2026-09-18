@@ -45,7 +45,6 @@ jobs:
           name: Copy fixtures files over
           command: cp -R ./fixtures/python/uv/* .
       - noos-ci/python_lint_package:
-          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
           src_directory: "./src"
@@ -61,10 +60,24 @@ jobs:
           name: Copy fixtures files over
           command: cp -R ./fixtures/python/uv/* .
       - noos-ci/python_test_package:
-          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
           tests_directory: "./src/tests"
+
+  integration_test_python_test_package_uv_prune_cache:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/uv/* .
+      - noos-ci/python_test_package:
+          install_args: "--dev"
+          configure_git: false
+          tests_directory: "./src/tests"
+          prune_cache: true
 
   integration_test_python_build_wheel_uv:
     executor:
@@ -76,7 +89,6 @@ jobs:
           name: Copy fixtures files over
           command: cp -R ./fixtures/python/uv/* .
       - noos-ci/python_build_wheel:
-          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
 
@@ -214,6 +226,7 @@ workflows:
     jobs:
       - integration_test_python_lint_package_uv
       - integration_test_python_test_package_uv
+      - integration_test_python_test_package_uv_prune_cache
       - integration_test_python_build_wheel_uv
       - integration_test_helm_lint_chart
       - integration_test_github_post_comment:

@@ -1,12 +1,7 @@
 ---
-description: Spinup Python virtual environment [pipenv, poetry or uv].
+description: Spinup Python virtual environment using uv.
 
 parameters:
-  pkg_manager:
-    type: enum
-    enum: ["pipenv", "poetry", "uv"]
-    default: "uv"
-    description: Which package management tool to use.
   install_args:
     type: string
     default: "--dev"
@@ -15,6 +10,10 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  prune_cache:
+    type: boolean
+    default: false
+    description: Whether to prune the cache before saving it.
 
 steps:
   - when:
@@ -25,61 +24,25 @@ steps:
             command: noosinv git.config
             environment:
               NOOSINV_GIT_TOKEN: $GITHUB_TOKEN
+  - restore_cache:
+      keys:
+        - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+          {{ checksum \"uv.lock\" }}"
+        - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+        - virtualenv-{{ .Environment.CACHE_VERSION }}-
+  - run:
+      name: Install Python packages
+      command: |
+        uv lock --check
+        uv sync --frozen << parameters.install_args >>
   - when:
-      condition:
-        equal: [pipenv, << parameters.pkg_manager >>]
+      condition: << parameters.prune_cache >>
       steps:
-        - restore_cache:
-            keys:
-              - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
-                {{ checksum \"Pipfile.lock\" }}"
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
-            name: Install Python packages
-            command: |
-              pipenv sync << parameters.install_args >>
-              pipenv clean
-        - save_cache:
-            key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
-              {{ checksum \"Pipfile.lock\" }}"
-            paths:
-              - "./.venv"
-  - when:
-      condition:
-        equal: [poetry, << parameters.pkg_manager >>]
-      steps:
-        - restore_cache:
-            keys:
-              - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
-                {{ checksum \"poetry.lock\" }}"
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-
-        - run:
-            name: Install Python packages
-            command: poetry install << parameters.install_args >>
-        - save_cache:
-            key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
-              {{ checksum \"poetry.lock\" }}"
-            paths:
-              - "./.venv"
-  - when:
-      condition:
-        equal: [uv, << parameters.pkg_manager >>]
-      steps:
-        - restore_cache:
-            keys:
-              - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
-                {{ checksum \"uv.lock\" }}"
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-
-        - run:
-            name: Install Python packages
-            command: |
-              uv lock --check
-              uv sync --frozen << parameters.install_args >>
-        - save_cache:
-            key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
-              {{ checksum \"uv.lock\" }}"
-            paths:
-              - "./.uv-cache"
+            name: Prune cache
+            command: uv cache prune --ci
+  - save_cache:
+      key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+        {{ checksum \"uv.lock\" }}"
+      paths:
+        - "./.uv-cache"

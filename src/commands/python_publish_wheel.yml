@@ -1,13 +1,8 @@
 ---
 
-description: Publish wheel distribution to PyPi [uv and poetry ONLY].
+description: Publish wheel distribution to PyPi using uv.
 
 parameters:
-  pkg_manager:
-    type: enum
-    enum: ["pipenv", "poetry", "uv"]
-    default: "uv"
-    description: Which package management tool to use.
   install_args:
     type: string
     default: "--dev"
@@ -16,6 +11,10 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  prune_cache:
+    type: boolean
+    default: false
+    description: Whether to prune the cache before saving it.
   slack_alert:
     type: boolean
     default: true
@@ -23,12 +22,12 @@ parameters:
 
 steps:
   - python_configure_venv:
-      pkg_manager: << parameters.pkg_manager >>
       install_args: << parameters.install_args >>
       configure_git: << parameters.configure_git >>
+      prune_cache: << parameters.prune_cache >>
   - run:
       name: Publish Python wheel
-      command: noosinv python.release --install << parameters.pkg_manager >>
+      command: noosinv python.release --install uv
       environment:
         NOOSINV_PYTHON_USER: $PYPI_USER
         NOOSINV_PYTHON_TOKEN: $PYPI_TOKEN
