@@ -1,0 +1,104 @@
+name: Upgrade uv lock downstream
+
+# Reusable workflow: for each target repo, run `uv lock --upgrade-package <package>`
+# and open or update a single rolling PR with the resulting uv.lock change.
+#
+# Call it from the source repo (the one that publishes <package>), e.g.:
+#
+#   on:
+#     pull_request: { types: [closed], branches: [master] }
+#   jobs:
+#     upgrade:
+#       if: github.event.pull_request.merged == true
+#       uses: noosenergy/noos-circleci-orb/.github/workflows/upgrade_lock_template.yml@master
+#       with:
+#         package: source_repo
+#         target_repos: '["downstream_repo"]'
+#       secrets:
+#         PR_TOKEN: ${{ secrets.PR_TOKEN }}
+#
+# The merged source PR's author is requested as reviewer and @-mentioned in the upgrade PR body.
+#
+# PR_TOKEN: fine-grained PAT of a machine user (not the author of the source PR, since GitHub
+# rejects review requests to the PR author). The machine user must belong to a team allowed to
+# use the CircleCI contexts of the target repos, or their pipelines show "Unauthorized".
+# Owner noosenergy, repos = every target repo plus every private repo uv must fetch.
+# Permissions: Contents RW, Pull requests RW, Metadata R.
+
+on:
+  workflow_call:
+    inputs:
+      package:
+        description: Package to upgrade in the target lock files.
+        type: string
+        required: true
+      target_repos:
+        description: "JSON array of target repo names."
+        type: string
+        required: true
+      base:
+        description: Base branch of the target repos.
+        type: string
+        default: master
+      branch_prefix:
+        description: Rolling branch is <branch_prefix><package>.
+        type: string
+        default: chore/upgrade-
+    secrets:
+      PR_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  upgrade-lock-file:
+    name: Upgrade ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        repo: ${{ fromJSON(inputs.target_repos) }}
+    # One run at a time per package/target, so pushes to the rolling branch never race.
+    concurrency:
+      group: upgrade-${{ inputs.package }}-${{ matrix.repo }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout ${{ matrix.repo }}
+        uses: actions/checkout@main
+        with:
+          repository: noosenergy/${{ matrix.repo }}
+          ref: ${{ inputs.base }}
+          token: ${{ secrets.PR_TOKEN }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@main
+
+      - name: Upgrade package in uv.lock
+        # GH_TOKEN is read at call time by the git credential helper, to fetch private repos.
+        env:
+          GH_TOKEN: ${{ secrets.PR_TOKEN }}
+          PY_PACKAGE: ${{ inputs.package }}
+        run: |
+          git config --global credential.helper \
+            '!f() { echo "username=x-access-token"; echo "password=${GH_TOKEN}"; }; f'
+          uv lock --upgrade-package "$PY_PACKAGE"
+
+      - name: Open or update rolling PR
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PR_TOKEN }}
+          base: ${{ inputs.base }}
+          branch: ${{ inputs.branch_prefix }}${{ inputs.package }}
+          add-paths: uv.lock
+          reviewers: ${{ github.event.pull_request.user.login }}
+          labels: ":robot: Automation"
+          commit-message: Bump ${{ inputs.package }}
+          title: Bump ${{ inputs.package }}
+          body: |
+            Automated output of `uv lock --upgrade-package ${{ inputs.package }}`.
+
+            Source repo: ${{ github.repository }}
+            Source PR: ${{ github.event.pull_request.html_url || 'n/a (manual run)' }}
+            Source PR author: ${{ github.event.pull_request.user.login && format('@{0}', github.event.pull_request.user.login) || 'n/a (manual run)' }}
+            Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
