@@ -209,14 +209,6 @@ jobs:
           workspace: noos-prod
           plan_message: ${CIRCLE_BUILD_URL}
 
-  integration_test_github_post_comment:
-    executor:
-      name: noos-ci/default
-      tag: latest
-    steps:
-      - checkout
-      - noos-ci/github_post_comment
-
 # ------------------
 # Pipeline workflows
 # ------------------
@@ -229,9 +221,6 @@ workflows:
       - integration_test_python_test_package_uv_prune_cache
       - integration_test_python_build_wheel_uv
       - integration_test_helm_lint_chart
-      - integration_test_github_post_comment:
-          context: CODIUM_SHARED
-          <<: *filter_non_master_only
       - integration_test_helm_build_chart:
           context: CIRCLECI_SHARED
       - integration_test_docker_build_image:
