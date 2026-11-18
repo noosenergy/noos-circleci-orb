@@ -77,6 +77,10 @@ jobs:
           # Targets set python-downloads = "manual": install Python explicitly, do not rely on the runner.
           python-version: "3.12"
 
+      - name: Install Python
+        # python-version above only sets UV_PYTHON; it does not install anything.
+        run: uv python install 3.12
+
       - name: Upgrade package in uv.lock
         # GH_TOKEN is read at call time by the git credential helper, to fetch private repos.
         env:
